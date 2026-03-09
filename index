@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imperial Poll — Future of Lech</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c8a050;
+    --gold-light: #e8c878;
+    --gold-dim: #a07830;
+    --bg: #0c0a07;
+    --surface: #14110d;
+    --surface2: #1c1812;
+    --border: #3a2e1a;
+    --text: #e0d0b0;
+    --text-dim: #9a8868;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(200,160,80,0.015) 40px, rgba(200,160,80,0.015) 41px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .header {
+    text-align: center;
+    padding: 2.5rem 2rem 2rem;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--surface);
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header::before, .header::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin-bottom: 1.5rem;
+  }
+  .header::after { margin-top: 1.5rem; margin-bottom: 0; }
+
+  .crown { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; animation: float 4s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+  .empire-label { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.35em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 0.75rem; }
+
+  h1 { font-family: 'Cinzel', serif; font-size: 1.9rem; font-weight: 600; color: var(--gold-light); line-height: 1.25; margin-bottom: 0.5rem; }
+
+  .subtitle { font-style: italic; color: var(--text-dim); font-size: 1rem; }
+
+  .decree {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: none; border-bottom: none;
+    padding: 1.25rem 2rem;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    text-align: center;
+    border-left: 3px solid var(--gold-dim);
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+
+  .form-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 2rem;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section { margin-bottom: 2.5rem; }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.25rem;
+  }
+
+  .question { margin-bottom: 1.75rem; }
+  .question-label { font-size: 1.05rem; color: var(--text); margin-bottom: 0.85rem; font-weight: 600; }
+  .question-note { font-size: 0.85rem; font-style: italic; color: var(--text-dim); margin-bottom: 0.85rem; }
+
+  .options { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: var(--surface2);
+  }
+
+  .option:hover { border-color: var(--gold-dim); background: #221d14; }
+  .option:has(input:checked) { border-color: var(--gold-dim); background: #221d10; }
+
+  .option input[type="radio"], .option input[type="checkbox"] {
+    margin-top: 3px; accent-color: var(--gold); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer;
+  }
+
+  .option-text { flex: 1; }
+  .option-name { font-weight: 600; font-size: 1rem; color: var(--text); display: block; }
+  .option-desc { font-size: 0.82rem; color: var(--text-dim); font-style: italic; margin-top: 1px; display: block; }
+
+  .text-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.65rem 0.9rem; color: var(--text); font-family: 'Crimson Text', serif; font-size: 1rem;
+    resize: vertical; min-height: 80px; transition: border-color 0.18s;
+  }
+  .text-input:focus { outline: none; border-color: var(--gold-dim); }
+  .text-input::placeholder { color: var(--text-dim); font-style: italic; }
+
+  .name-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.65rem 0.9rem; color: var(--text); font-family: 'Crimson Text', serif; font-size: 1rem;
+    transition: border-color 0.18s;
+  }
+  .name-input:focus { outline: none; border-color: var(--gold-dim); }
+
+  .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 2rem 0; }
+
+  .submit-area { text-align: center; padding-top: 0.5rem; }
+
+  .submit-btn {
+    font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.85rem 3rem; background: linear-gradient(135deg, #8a6520, var(--gold), #8a6520);
+    border: 1px solid var(--gold-dim); color: #0c0a07; border-radius: 3px; cursor: pointer;
+    transition: all 0.2s ease; font-weight: 700;
+  }
+  .submit-btn:hover { background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold)); box-shadow: 0 0 20px rgba(200,160,80,0.25); transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .submitting-msg { margin-top: 1rem; font-style: italic; color: var(--text-dim); font-size: 0.9rem; display: none; }
+
+  .error-msg {
+    margin-top: 1rem; color: #c07070; font-size: 0.9rem; font-style: italic;
+    background: #1a0f0f; border: 1px solid #5a2020; border-radius: 4px;
+    padding: 0.65rem 0.9rem; display: none;
+  }
+
+  .thankyou {
+    display: none; text-align: center; padding: 4rem 2rem;
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .thankyou .crown-big { font-size: 4rem; display: block; margin-bottom: 1rem; }
+  .thankyou h2 { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold-light); margin-bottom: 0.75rem; }
+  .thankyou p { color: var(--text-dim); font-style: italic; font-size: 1rem; }
+
+  .gold-line { height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0.75rem auto; width: 60%; }
+
+  .footer {
+    border: 1px solid var(--border); border-top: none; background: var(--surface2);
+    text-align: center; padding: 1rem; font-size: 0.78rem; color: var(--text-dim); font-style: italic;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <span class="crown">♛</span>
+    <div class="empire-label">Empire of Lech — Imperial Survey</div>
+    <h1>On the Future Form<br>of Our Government</h1>
+    <p class="subtitle">A poll issued by the Imperial Crown to its loyal subjects</p>
+  </div>
+
+  <div class="decree">
+    "We, Edward, Emperor of Lech, invite all subjects to cast their voice on the future governance of the Empire. Your counsel shall inform the deliberations of the Crown."
+  </div>
+
+  <div class="form-body" id="pollForm">
+
+    <div class="section">
+      <div class="section-title">I. Your Identity</div>
+      <div class="question">
+        <div class="question-label">Your name or handle <span style="color:var(--text-dim);font-weight:400;font-size:0.85rem;">(optional)</span></div>
+        <input class="name-input" type="text" id="nameField" placeholder="e.g. Lord von Stein, or leave blank to submit anonymously">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">II. Preferred Form of Government</div>
+      <div class="question">
+        <div class="question-label">Which form of government would you most prefer for Lech?</div>
+        <div class="question-note">Select one.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="govtType" value="Absolute Monarchy"><div class="option-text"><span class="option-name">Absolute Monarchy</span><span class="option-desc">The Emperor holds supreme and unrestricted power. No legislature — the Emperor's word is law.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Semi-Constitutional Monarchy (Current)"><div class="option-text"><span class="option-name">Semi-Constitutional Monarchy <span style="color:var(--gold);font-size:0.8rem;">(Current)</span></span><span class="option-desc">The Emperor reigns with significant authority, balanced by a Bundestag and Bundesherren.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Constitutional Monarchy"><div class="option-text"><span class="option-name">Constitutional Monarchy</span><span class="option-desc">The Emperor reigns but does not rule. A fully elected parliament holds authority; the Crown is ceremonial.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Oligarchy"><div class="option-text"><span class="option-name">Oligarchy</span><span class="option-desc">Power concentrated among a small group — the nobility, wealthy, or senior peers.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Theocracy"><div class="option-text"><span class="option-name">Theocracy</span><span class="option-desc">Governance guided by divine law. The Roman Catholic Church holds significant authority.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Parliamentary Republic"><div class="option-text"><span class="option-name">Parliamentary Republic</span><span class="option-desc">Abolish the monarchy. A fully elected parliament and prime minister govern the Empire.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Military Junta"><div class="option-text"><span class="option-name">Military Junta</span><span class="option-desc">The armed forces seize control. Senior commanders govern with order as the guiding principle.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Direct Democracy"><div class="option-text"><span class="option-name">Direct Democracy</span><span class="option-desc">Citizens vote directly on all laws. No intermediary representatives — the people are sovereign.</span></div></label>
+          <label class="option"><input type="radio" name="govtType" value="Feudal System"><div class="option-text"><span class="option-name">Feudal System</span><span class="option-desc">Power decentralised to lords and nobles who govern their territories, pledging loyalty to the Emperor.</span></div></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">III. The Role of the Emperor</div>
+      <div class="question">
+        <div class="question-label">Regardless of government type, what role should the Emperor play?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="emperorRole" value="Supreme Ruler"><div class="option-text"><span class="option-name">Supreme Ruler</span><span class="option-desc">Final authority over all matters of state, law, and military.</span></div></label>
+          <label class="option"><input type="radio" name="emperorRole" value="Executive Head"><div class="option-text"><span class="option-name">Executive Head</span><span class="option-desc">Leads the executive branch but is checked by the legislature.</span></div></label>
+          <label class="option"><input type="radio" name="emperorRole" value="Ceremonial Head"><div class="option-text"><span class="option-name">Ceremonial Head</span><span class="option-desc">A symbol of national unity with no real governing power.</span></div></label>
+          <label class="option"><input type="radio" name="emperorRole" value="Abolished"><div class="option-text"><span class="option-name">Abolished</span><span class="option-desc">The role of Emperor should be dissolved entirely.</span></div></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">IV. The Legislature</div>
+      <div class="question">
+        <div class="question-label">What should happen to the Bundestag and Bundesherren?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="legislature" value="Keep both houses"><div class="option-text"><span class="option-name">Keep both houses</span><span class="option-desc">Retain the Bundestag (lower) and Bundesherren (upper) as they are.</span></div></label>
+          <label class="option"><input type="radio" name="legislature" value="Bundestag only"><div class="option-text"><span class="option-name">Bundestag only</span><span class="option-desc">Abolish the Bundesherren. A single elected chamber governs.</span></div></label>
+          <label class="option"><input type="radio" name="legislature" value="Bundesherren only"><div class="option-text"><span class="option-name">Bundesherren only</span><span class="option-desc">Abolish the Bundestag. Governance rests with the nobility and peers.</span></div></label>
+          <label class="option"><input type="radio" name="legislature" value="Abolish both"><div class="option-text"><span class="option-name">Abolish both</span><span class="option-desc">No parliament at all. Power held entirely by the Emperor or another authority.</span></div></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">V. Citizens' Rights</div>
+      <div class="question">
+        <div class="question-label">Which rights are most important to preserve? <span style="color:var(--text-dim);font-weight:400;font-size:0.85rem;">(Select all that apply)</span></div>
+        <div class="options">
+          <label class="option"><input type="checkbox" name="rights" value="Personal Liberty (§65)"><div class="option-text"><span class="option-name">Personal Liberty (§65)</span><span class="option-desc">No subject imprisoned for political or religious beliefs.</span></div></label>
+          <label class="option"><input type="checkbox" name="rights" value="Property Rights (§67)"><div class="option-text"><span class="option-name">Property Rights (§67)</span><span class="option-desc">The right to own property, protected from unlawful seizure.</span></div></label>
+          <label class="option"><input type="checkbox" name="rights" value="Freedom of Assembly (§72)"><div class="option-text"><span class="option-name">Freedom of Assembly (§72)</span><span class="option-desc">Right to gather and organise without prior permission.</span></div></label>
+          <label class="option"><input type="checkbox" name="rights" value="Freedom of Press (§70)"><div class="option-text"><span class="option-name">Freedom of Press (§70)</span><span class="option-desc">Right to publish ideas freely, subject only to legal accountability.</span></div></label>
+          <label class="option"><input type="checkbox" name="rights" value="Religious Freedom (§62-64)"><div class="option-text"><span class="option-name">Religious Freedom (§62–64)</span><span class="option-desc">All Christian sects protected; no civic penalty for creed or descent.</span></div></label>
+          <label class="option"><input type="checkbox" name="rights" value="None — state takes priority"><div class="option-text"><span class="option-name">None — the state takes priority</span><span class="option-desc">The strength and unity of the Empire supersedes individual rights.</span></div></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">VI. Further Counsel</div>
+      <div class="question">
+        <div class="question-label">Any other thoughts on the future of Lech? <span style="color:var(--text-dim);font-weight:400;font-size:0.85rem;">(Optional)</span></div>
+        <textarea class="text-input" id="comments" placeholder="Speak freely, subject. Your words reach the Emperor's ear."></textarea>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button class="submit-btn" id="submitBtn" onclick="submitPoll()">⚜ Submit to the Crown ⚜</button>
+      <div class="submitting-msg" id="submittingMsg">⏳ Delivering your response to the Imperial record...</div>
+      <div class="error-msg" id="errorMsg"></div>
+    </div>
+
+  </div>
+
+  <div class="thankyou" id="thankyou">
+    <span class="crown-big">♛</span>
+    <div class="gold-line"></div>
+    <h2>Your voice has been received.</h2>
+    <p>The Emperor thanks you for your counsel, loyal subject.<br>Your response has been recorded in the imperial ledger.</p>
+    <div class="gold-line"></div>
+  </div>
+
+  <div class="footer">
+    <div>Issued by Imperial Decree · Empire of Lech · Anno Domini 2022</div>
+    <div style="margin-top:0.25rem;">All responses are submitted in loyalty to the Crown.</div>
+  </div>
+
+</div>
+
+<script>
+  // ============================================================
+  // STEP 1: Replace this URL with your Google Apps Script URL
+  // (You will get this after deploying — see instructions below)
+  // ============================================================
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOvWFsw9ebSs3Va9yrjiwWugGwGdpg5xU0CKQAl69AtRTzfmEBqN6VxMUbNBj1zccvPQ/exec";
+
+  async function submitPoll() {
+    const govtType    = document.querySelector('input[name="govtType"]:checked');
+    const emperorRole = document.querySelector('input[name="emperorRole"]:checked');
+    const legislature = document.querySelector('input[name="legislature"]:checked');
+    const rights      = [...document.querySelectorAll('input[name="rights"]:checked')].map(e => e.value);
+    const name        = document.getElementById('nameField').value.trim();
+    const comments    = document.getElementById('comments').value.trim();
+
+    if (!govtType) {
+      alert('Please select a preferred form of government before submitting.');
+      return;
+    }
+
+    // Disable button and show loading
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    document.getElementById('submittingMsg').style.display = 'block';
+    document.getElementById('errorMsg').style.display = 'none';
+
+    const payload = {
+      name,
+      govtType:     govtType?.value    || "",
+      emperorRole:  emperorRole?.value || "",
+      legislature:  legislature?.value || "",
+      rights,
+      comments
+    };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", // Required for Google Apps Script
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      // no-cors means we can't read the response, but if no error was thrown it worked
+      document.getElementById('pollForm').style.display = 'none';
+      document.getElementById('thankyou').style.display = 'block';
+
+    } catch (error) {
+      btn.disabled = false;
+      document.getElementById('submittingMsg').style.display = 'none';
+      const errBox = document.getElementById('errorMsg');
+      errBox.style.display = 'block';
+      errBox.textContent = "Something went wrong submitting your response. Please try again, or contact the Emperor's staff.";
+    }
+  }
+</script>
+</body>
+</html>
