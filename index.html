@@ -316,7 +316,7 @@
   // STEP 1: Replace this URL with your Google Apps Script URL
   // (You will get this after deploying — see instructions below)
   // ============================================================
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOvWFsw9ebSs3Va9yrjiwWugGwGdpg5xU0CKQAl69AtRTzfmEBqN6VxMUbNBj1zccvPQ/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKXvDVTLSMPYE95B9a8H_EkTNv2gMg0zeZ8n6nUmL3N2CzT7g58sbTPIGqA6CTErKEoA/exec";
 
   async function submitPoll() {
     const govtType    = document.querySelector('input[name="govtType"]:checked');
@@ -348,11 +348,11 @@
 
     try {
       await fetch(SCRIPT_URL, {
-  method: "POST",
-  mode: "no-cors",
-  headers: { "Content-Type": "text/plain" },
-  body: JSON.stringify(payload)
-});
+        method: "POST",
+        mode: "no-cors", // Required for Google Apps Script
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload)
+      });
 
       // no-cors means we can't read the response, but if no error was thrown it worked
       document.getElementById('pollForm').style.display = 'none';
